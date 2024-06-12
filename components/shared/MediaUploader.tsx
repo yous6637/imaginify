@@ -42,7 +42,8 @@ const MediaUploader = ({
     })
   }
 
-  const onUploadErrorHandler = () => {
+  const onUploadErrorHandler = (error : any) => {
+    console.log(error)
     toast({
       title: 'Something went wrong while uploading',
       description: 'Please try again',
