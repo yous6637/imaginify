@@ -2,9 +2,10 @@
 
 
 // Database Constants
-export const DATABASE_URL = process.env.DATABASE_URL || "postgresql://yous6637:U5F1WPyCVOqv@ep-gentle-cake-68965845.us-east-2.aws.neon.tech/imaginify?sslmode=require";
+export const DATABASE_URL = process.env.DATABASE_URL || "postgresql://yous6637:" +
+    "U5F1WPyCVOqv@ep-gentle-cake-68965845.us-east-2.aws.neon.tech/imaginify?sslmode=require";
 
-export const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET || "whsec_7b2b1b3b-7b2b-4b3b-7b2b-1b3b7b2b4b3b";
+export const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET || "whsec_i9T1/saJzoA77sKI7f3y33xhJkehKOQK";
 
 export const NEXT_PUBLIC_CLERK_SIGN_IN_URL = process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL || "/sign-in"
 export const NEXT_PUBLIC_CLERK_SIGN_UP_URL = process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL || "/sign-up"
