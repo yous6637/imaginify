@@ -6,7 +6,7 @@ import TransformationForm from "@/components/shared/TransformationForm";
 import { transformationTypes } from "@/constants";
 import { getUserById } from "@/lib/actions/user.actions";
 import { getImageById } from "@/lib/actions/image.actions";
-import { SearchParamProps, TransformationTypeKey } from "@/types";
+import { IImage, SearchParamProps, TransformationTypeKey } from "@/types";
 
 const Page = async ({ params: { id } }: SearchParamProps) => {
   const { userId } = auth();
@@ -18,7 +18,7 @@ const Page = async ({ params: { id } }: SearchParamProps) => {
   const image = await getImageById(id);
 
   const transformation =
-    transformationTypes[image.transformationType as TransformationTypeKey];
+    transformationTypes[(image?.transformationType || "recolor") as TransformationTypeKey];
 
   return (
     <>
@@ -28,10 +28,10 @@ const Page = async ({ params: { id } }: SearchParamProps) => {
         <TransformationForm
           action="Update"
           userId={user.id}
-          type={image.transformationType as TransformationTypeKey}
+          type={image?.transformationType as TransformationTypeKey}
           creditBalance={user.creditBalance}
-          config={image.config}
-          data={image}
+          config={image?.config}
+          data={image as IImage}
         />
       </section>
     </>

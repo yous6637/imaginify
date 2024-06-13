@@ -1,4 +1,5 @@
 import { images ,users} from '@/database/schema';
+import { auth } from '@clerk/nextjs';
 /* eslint-disable no-unused-vars */
 
 // ====== USER PARAMS
@@ -135,4 +136,6 @@ declare type TransformedImageProps = {
 declare type IUser = typeof users.$inferSelect 
 
 
-declare type IImage = typeof images.$inferSelect
+declare type IImage = Omit<typeof images.$inferSelect, "author"> & {
+  author: IUser;
+};
