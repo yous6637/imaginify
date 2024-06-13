@@ -1,3 +1,4 @@
+import { images ,users} from '@/database/schema';
 /* eslint-disable no-unused-vars */
 
 // ====== USER PARAMS
@@ -37,20 +38,7 @@ declare type AddImageParams = {
 };
 
 declare type UpdateImageParams = {
-  image: {
-    _id: string;
-    title: string;
-    publicId: string;
-    transformationType: string;
-    width: number;
-    height: number;
-    config: any;
-    secureURL: string;
-    transformationURL: string;
-    aspectRatio: string | undefined;
-    prompt: string | undefined;
-    color: string | undefined;
-  };
+  image: Optional<typeof images.$inferInsert>
   userId: string;
   path: string;
 };
@@ -136,3 +124,12 @@ declare type TransformedImageProps = {
   hasDownload?: boolean;
   setIsTransforming?: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+
+// ====== IMAGE MODEL
+
+
+
+// ====== USER MODEL
+
+declare type IUser = typeof users.$inferSelect 

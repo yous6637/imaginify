@@ -15,9 +15,9 @@ export const images = pgTable('images', {
     transformationType: varchar('transformation_type', { length: 255 }).notNull(),
     publicId: varchar('public_id', { length: 255 }).notNull(),
     secureURL: varchar('secure_url', { length: 255 }).notNull(),
-    width: integer('width'),
-    height: integer('height'),
-    config: jsonb('config'),
+    width: integer('width').notNull(),
+    height: integer('height').notNull(),
+    config: jsonb('config').$type<Record<string, any>>(),
     transformationUrl: varchar('transformation_url', { length: 255 }),
     aspectRatio: varchar('aspect_ratio', { length: 255 }),
     color: varchar('color', { length: 255 }),
@@ -36,7 +36,7 @@ export const users = pgTable('users', {
     firstName: varchar('first_name', { length: 255 }),
     lastName: varchar('last_name', { length: 255 }),
     planId: integer('plan_id').default(1),
-    creditBalance: integer('credit_balance').default(10),
+    creditBalance: integer('credit_balance').notNull().default(10),
   });
 
 

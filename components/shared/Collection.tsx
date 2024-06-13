@@ -18,6 +18,7 @@ import { formUrlQuery } from "@/lib/utils";
 import { Button } from "../ui/button";
 
 import { Search } from "./Search";
+import { TransformationTypeKey } from "@/types";
 
 export const Collection = ({
   hasSearch = false,
@@ -56,7 +57,7 @@ export const Collection = ({
       {images.length > 0 ? (
         <ul className="collection-list">
           {images.map((image) => (
-            <Card image={image} key={image._id} />
+            <Card image={image} key={image.id} />
           ))}
         </ul>
       ) : (
@@ -97,7 +98,7 @@ export const Collection = ({
 const Card = ({ image }: { image: IImage }) => {
   return (
     <li>
-      <Link href={`/transformations/${image._id}`} className="collection-card">
+      <Link href={`/transformations/${image.id}`} className="collection-card">
         <CldImage
           src={image.publicId}
           alt={image.title}

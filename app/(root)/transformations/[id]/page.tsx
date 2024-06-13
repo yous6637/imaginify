@@ -8,50 +8,51 @@ import { Button } from "@/components/ui/button";
 import { getImageById } from "@/lib/actions/image.actions";
 import { getImageSize } from "@/lib/utils";
 import { DeleteConfirmation } from "@/components/shared/DeleteConfirmation";
+import { SearchParamProps } from "@/types";
 
 const ImageDetails = async ({ params: { id } }: SearchParamProps) => {
   const { userId } = auth();
 
-  const image = await getImageById(id);
+  const image = (await getImageById(id))!;
 
   return (
     <>
-      <Header title={image.title} />
+      <Header title={image?.title || ""} />
 
       <section className="mt-5 flex flex-wrap gap-4">
         <div className="p-14-medium md:p-16-medium flex gap-2">
           <p className="text-dark-600">Transformation:</p>
           <p className=" capitalize text-purple-400">
-            {image.transformationType}
+            {image?.transformationType}
           </p>
         </div>
 
-        {image.prompt && (
+        {image?.prompt && (
           <>
             <p className="hidden text-dark-400/50 md:block">&#x25CF;</p>
             <div className="p-14-medium md:p-16-medium flex gap-2 ">
               <p className="text-dark-600">Prompt:</p>
-              <p className=" capitalize text-purple-400">{image.prompt}</p>
+              <p className=" capitalize text-purple-400">{image?.prompt}</p>
             </div>
           </>
         )}
 
-        {image.color && (
+        {image?.color && (
           <>
             <p className="hidden text-dark-400/50 md:block">&#x25CF;</p>
             <div className="p-14-medium md:p-16-medium flex gap-2">
               <p className="text-dark-600">Color:</p>
-              <p className=" capitalize text-purple-400">{image.color}</p>
+              <p className=" capitalize text-purple-400">{image?.color}</p>
             </div>
           </>
         )}
 
-        {image.aspectRatio && (
+        {image?.aspectRatio && (
           <>
             <p className="hidden text-dark-400/50 md:block">&#x25CF;</p>
             <div className="p-14-medium md:p-16-medium flex gap-2">
               <p className="text-dark-600">Aspect Ratio:</p>
-              <p className=" capitalize text-purple-400">{image.aspectRatio}</p>
+              <p className=" capitalize text-purple-400">{image?.aspectRatio}</p>
             </div>
           </>
         )}
@@ -64,9 +65,9 @@ const ImageDetails = async ({ params: { id } }: SearchParamProps) => {
             <h3 className="h3-bold text-dark-600">Original</h3>
 
             <Image
-              width={getImageSize(image.transformationType, image, "width")}
-              height={getImageSize(image.transformationType, image, "height")}
-              src={image.secureURL}
+              width={getImageSize(image?.transformationType, image, "width")}
+              height={getImageSize(image?.transformationType, image, "height")}
+              src={image?.secureURL}
               alt="image"
               className="transformation-original_image"
             />
@@ -75,23 +76,23 @@ const ImageDetails = async ({ params: { id } }: SearchParamProps) => {
           {/* TRANSFORMED IMAGE */}
           <TransformedImage
             image={image}
-            type={image.transformationType}
-            title={image.title}
+            type={image?.transformationType}
+            title={image?.title}
             isTransforming={false}
-            transformationConfig={image.config}
+            transformationConfig={image?.config}
             hasDownload={true}
           />
         </div>
 
-        {userId === image.author.clerkId && (
+        {userId === image?.author.id && (
           <div className="mt-4 space-y-4">
             <Button asChild type="button" className="submit-button capitalize">
-              <Link href={`/transformations/${image._id}/update`}>
+              <Link href={`/transformations/${image?.id}/update`}>
                 Update Image
               </Link>
             </Button>
 
-            <DeleteConfirmation imageId={image._id} />
+            <DeleteConfirmation public_id= {image.publicId} imageId={image?.id} />
           </div>
         )}
       </section>

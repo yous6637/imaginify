@@ -29,6 +29,7 @@ import { getCldImageUrl } from "next-cloudinary"
 import { addImage, updateImage } from "@/lib/actions/image.actions"
 import { useRouter } from "next/navigation"
 import { InsufficientCreditsModal } from "./InsufficientCreditsModal"
+import { TransformationFormProps, Transformations } from "@/types"
  
 export const formSchema = z.object({
   title: z.string(),
@@ -88,6 +89,8 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
         color: values.color,
       }
 
+      console.log({imageData})
+
       if(action === 'Add') {
         try {
           const newImage = await addImage({
@@ -99,7 +102,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
           if(newImage) {
             form.reset()
             setImage(data)
-            router.push(`/transformations/${newImage._id}`)
+            router.push(`/transformations/${newImage.id}`)
           }
         } catch (error) {
           console.log(error);
@@ -111,7 +114,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
           const updatedImage = await updateImage({
             image: {
               ...imageData,
-              _id: data._id
+              id: data.id
             },
             userId,
             path: `/transformations/${data._id}`

@@ -8,7 +8,13 @@ import { db } from "@/database";
 import { images, users } from "@/database/schema";
 import { count, eq, getTableColumns, inArray } from "drizzle-orm";
 import { AnyColumn, sql } from "drizzle-orm";
-import { CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME } from "@/constants/variables";
+import {
+  CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET,
+  NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+} from "@/constants/variables";
+import { AddImageParams, UpdateImageParams } from "@/types";
+import { IImage } from "../database/models/image.model";
 
 const customCount = (column?: AnyColumn) => {
   if (column) {
@@ -33,14 +39,18 @@ export async function addImage({ image, userId, path }: AddImageParams) {
       (value) => value.id === userId
     );
 
+    console.log({ userId, author });
+
     if (!author) {
       throw new Error("User not found");
     }
 
-    const newImage = await db
-      .insert(images)
-      .values({ ...image, author: author.id })
-      .returning(getTableColumns(images));
+    const newImage = (
+      await db
+        .insert(images)
+        .values({ ...image, author: author.id })
+        .returning(getTableColumns(images))
+    ).at(0);
 
     revalidatePath(path);
 
@@ -54,7 +64,7 @@ export async function addImage({ image, userId, path }: AddImageParams) {
 export async function updateImage({ image, userId, path }: UpdateImageParams) {
   try {
     const imageToUpdate = (await db.select().from(images)).find(
-      (value) => value.id === image._id
+      (value) => value.id === image.id
     );
 
     if (!imageToUpdate || imageToUpdate.author !== userId) {
@@ -75,8 +85,11 @@ export async function updateImage({ image, userId, path }: UpdateImageParams) {
 }
 
 // DELETE IMAGE
-export async function deleteImage(imageId: string) {
+export async function deleteImage(imageId: string, public_id: string) {
   try {
+    cloudinary.api
+      .delete_resources([public_id], { type: "upload", resource_type: "image" })
+      .then(console.log);
     await db.delete(images).where(eq(images.id, imageId));
   } catch (error) {
     handleError(error);
@@ -92,7 +105,7 @@ export async function getImageById(imageId: string) {
 
     if (!image) throw new Error("Image not found");
 
-    return JSON.parse(JSON.stringify(image));
+    return image as IImage;
   } catch (error) {
     handleError(error);
   }
@@ -131,18 +144,6 @@ export async function getAllImages({
     const sql = searchQuery
       ? db.select().from(images).where(inArray(images.publicId, resourceIds))
       : db.select().from(images);
-
-    let query = {};
-
-    if (searchQuery) {
-      query = {
-        publicId: {
-          $in: resourceIds,
-        },
-      };
-    }
-
-    const skipAmount = (Number(page) - 1) * Number(limit);
 
     const Images = (await sql.limit(limit))?.sort(
       (v1, v2) => v1.updatedAt.getTime() - v2.updatedAt.getTime()

@@ -6,6 +6,7 @@ import { handleError } from "../utils";
 import { db } from "@/database";
 import { users } from "@/database/schema";
 import { eq, getTableColumns, sql } from "drizzle-orm";
+import { CreateUserParams, IUser, UpdateUserParams } from "@/types";
 
 // CREATE
 export async function createUser(user: CreateUserParams) {
@@ -22,15 +23,16 @@ export async function createUser(user: CreateUserParams) {
 }
 
 // READ
-export async function getUserById(userId: string) {
+export async function getUserById(userId?: string | null) {
   try {
+    if (!userId) throw new Error("User ID is required");
     const user = (await db.select().from(users).where(eq(users.id, userId))).at(
       0
     );
 
     if (!user) throw new Error("User not found");
 
-    return JSON.parse(JSON.stringify(user));
+    return user;
   } catch (error) {
     handleError(error);
   }
