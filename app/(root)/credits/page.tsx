@@ -11,9 +11,10 @@ import Checkout from "@/components/shared/Checkout";
 const Credits = async () => {
   const { userId } = auth();
 
-  if (!userId) redirect("/sign-in");
 
   const user = await getUserById(userId);
+
+  if (!user) redirect("/sign-in");
 
   return (
     <>
@@ -65,7 +66,7 @@ const Credits = async () => {
                     plan={plan.name}
                     amount={plan.price}
                     credits={plan.credits}
-                    buyerId={user._id}
+                    buyerId={user?.id}
                   />
                 </SignedIn>
               )}
