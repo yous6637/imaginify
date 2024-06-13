@@ -133,3 +133,6 @@ declare type TransformedImageProps = {
 // ====== USER MODEL
 
 declare type IUser = typeof users.$inferSelect 
+
+
+declare type IImage = typeof images.$inferSelect

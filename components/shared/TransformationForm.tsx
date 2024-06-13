@@ -51,10 +51,10 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
 
   const initialValues = data && action === 'Update' ? {
     title: data?.title,
-    aspectRatio: data?.aspectRatio,
-    color: data?.color,
-    prompt: data?.prompt,
-    publicId: data?.publicId,
+    aspectRatio: data?.aspectRatio || undefined,
+    color: data?.color || undefined,
+    prompt: data?.prompt || undefined,
+    publicId: data?.publicId || '',
   } : defaultValues
 
    // 1. Define your form.
@@ -71,18 +71,18 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
       const transformationUrl = getCldImageUrl({
         width: image?.width,
         height: image?.height,
-        src: image?.publicId,
+        src: image?.publicId!,
         ...transformationConfig
       })
 
       const imageData = {
         title: values.title,
-        publicId: image?.publicId,
+        publicId: image?.publicId!,
         transformationType: type,
-        width: image?.width,
-        height: image?.height,
+        width: image?.width!,
+        height: image?.height!,
         config: transformationConfig,
-        secureURL: image?.secureURL,
+        secureURL: image?.secureURL!,
         transformationURL: transformationUrl,
         aspectRatio: values.aspectRatio,
         prompt: values.prompt,
@@ -94,7 +94,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
       if(action === 'Add') {
         try {
           const newImage = await addImage({
-            image: imageData,
+            image: imageData as Required<typeof imageData>,
             userId,
             path: '/'
           })
@@ -109,7 +109,7 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
         }
       }
 
-      if(action === 'Update') {
+      if(action === 'Update' && data) {
         try {
           const updatedImage = await updateImage({
             image: {
@@ -117,11 +117,11 @@ const TransformationForm = ({ action, data = null, userId, type, creditBalance, 
               id: data.id
             },
             userId,
-            path: `/transformations/${data._id}`
+            path: `/transformations/${data.id}`
           })
 
           if(updatedImage) {
-            router.push(`/transformations/${updatedImage._id}`)
+            router.push(`/transformations/${updatedImage.id}`)
           }
         } catch (error) {
           console.log(error);

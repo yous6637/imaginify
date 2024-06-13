@@ -13,8 +13,7 @@ import {
   CLOUDINARY_API_SECRET,
   NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
 } from "@/constants/variables";
-import { AddImageParams, UpdateImageParams } from "@/types";
-import { IImage } from "../database/models/image.model";
+import { AddImageParams, IImage, UpdateImageParams } from "@/types";
 
 const customCount = (column?: AnyColumn) => {
   if (column) {
@@ -54,7 +53,7 @@ export async function addImage({ image, userId, path }: AddImageParams) {
 
     revalidatePath(path);
 
-    return JSON.parse(JSON.stringify(newImage));
+    return newImage as typeof images.$inferSelect;
   } catch (error) {
     handleError(error);
   }
@@ -71,14 +70,14 @@ export async function updateImage({ image, userId, path }: UpdateImageParams) {
       throw new Error("Unauthorized or image not found");
     }
 
-    const updatedImage = await db
+    const updatedImage = (await db
       .update(images)
       .set(image)
-      .where(eq(images.id, imageToUpdate.id));
+      .where(eq(images.id, imageToUpdate.id)).returning(getTableColumns(images))).at(0);
 
     revalidatePath(path);
 
-    return JSON.parse(JSON.stringify(updatedImage));
+    return updatedImage as typeof images.$inferSelect;
   } catch (error) {
     handleError(error);
   }
@@ -105,7 +104,7 @@ export async function getImageById(imageId: string) {
 
     if (!image) throw new Error("Image not found");
 
-    return image as IImage;
+    return image ;
   } catch (error) {
     handleError(error);
   }
