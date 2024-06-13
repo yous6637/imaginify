@@ -17,7 +17,7 @@ export const NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=process.env.NEXT_PUBLIC_CLERK_A
 
 export const CHARGILY_SK = process.env.CHARGILY_SK || "test_sk_84hl2JihjzxatIXuLbo8AT9eibVjkA8QfUr0Stxu";
 export const CHARGILY_WEBHOOK_URL= process.env.CHARGILY_WEBHOOK_URL
-export const CHARGILY_SUCCESS_URL= process.env.CHARGILY_SUCCESS_URL
+export const CHARGILY_SUCCESS_URL= process.env.CHARGILY_SUCCESS_URL || "https://picturify-jl36e47gp-yous6637s-projects.vercel.app/"
 export const CHARGILI_FAIL_URL= process.env.CHARGILI_FAIL_URL
 // Clerk Constants
 export const NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_dG91Y2hlZC1nbGlkZXItNjguY2xlcmsuYWNjb3VudHMuZGV2JA"
