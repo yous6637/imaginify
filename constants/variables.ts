@@ -17,8 +17,9 @@ export const NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=process.env.NEXT_PUBLIC_CLERK_A
 
 export const CHARGILY_SK = process.env.CHARGILY_SK || "test_sk_bFTlBPk09DIiXSggJyHxIJMGJtpdMliWfMNA1anT";
 export const CHARGILIY_PK= process.env.CHARGILIY_PK || "test_pk_Lt3ihCPsQjbBANHMeD423zngIfGzNdo0Qs6FAcQK"
-
-
+export const CHARGILY_WEBHOOK_URL= process.env.CHARGILY_WEBHOOK_URL 
+export const CHARGILY_SUCCESS_URL= process.env.CHARGILY_SUCCESS_URL
+export const CHARGILI_FAIL_URL= process.env.CHARGILI_FAIL_URL
 // Clerk Constants
 export const NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_dG91Y2hlZC1nbGlkZXItNjguY2xlcmsuYWNjb3VudHMuZGV2JA"
 export const CLERK_SECRET_KEY=process.env.CLERK_SECRET_KEY || "sk_test_cpQXzmS7uKlBHHoH3Ou15nATjiuTLx4dqRSOtBb6dO"
