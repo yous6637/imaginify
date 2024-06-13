@@ -1,3 +1,4 @@
+import PaymentToast from "@/components/PaymentToast"
 import { Collection } from "@/components/shared/Collection"
 import { navLinks } from "@/constants"
 import { getAllImages } from "@/lib/actions/image.actions"
@@ -11,9 +12,12 @@ const Home = async ({ searchParams }: SearchParamProps) => {
 
   const images = await getAllImages({ page, searchQuery})
 
+  const checkout_id = searchParams?.checkout_id as string | undefined;
+
   return (
     <>
       <section className="home">
+        <PaymentToast checkout_id= {checkout_id} />
         <h1 className="home-heading">
           Unleash Your Creative Vision with Imaginify
         </h1>
