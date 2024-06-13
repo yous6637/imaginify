@@ -80,15 +80,15 @@ export async function deleteUser(clerkId: string) {
 // USE CREDITS
 export async function updateCredits(userId: string, creditFee: number) {
   try {
-    const updatedUserCredits = await db
+    const updatedUserCredits = (await db
       .update(users)
       .set({ creditBalance: sql`${users.creditBalance} + ${creditFee}` })
       .where(eq(users.id, userId))
-      .returning(getTableColumns(users));
+      .returning(getTableColumns(users))).at(0);
 
     if (!updatedUserCredits) throw new Error("User credits update failed");
 
-    return JSON.parse(JSON.stringify(updatedUserCredits));
+    return updatedUserCredits;
   } catch (error) {
     handleError(error);
   }
